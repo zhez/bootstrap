@@ -329,18 +329,32 @@ window.onload = function () { // wait for load in a dumb way because B-0
     })
   })
 
-  // browser support alerts
-  if (!window.URL && navigator.userAgent.toLowerCase().indexOf('safari') != -1) {
-    showCallout('Looks like you\'re using safari, which sadly doesn\'t have the best support' +
-                 'for HTML5 blobs. Because of this your file will be downloaded with the name <code>"untitled"</code>.' +
-                 'However, if you check your downloads folder, just rename this <code>"untitled"</code> file' +
-                 'to <code>"bootstrap.zip"</code> and you should be good to go!')
-  } else if (!window.URL && !window.webkitURL) {
-    $('.bs-docs-section, .bs-docs-sidebar').css('display', 'none')
+  // browser support alert
+  +function () {
+    /**
+     * Based on:
+     *   Blob Feature Check v1.0.0
+     *   https://github.com/ssorallen/blob-feature-check/
+     *   License: Public domain (http://unlicense.org)
+     */
+    var svg = new Blob(
+      ['<svg xmlns=\'http://www.w3.org/2000/svg\'></svg>'],
+      {type: 'image/svg+xml;charset=utf-8'}
+    )
 
-    showCallout('Looks like your current browser doesn\'t support the Bootstrap Customizer. Please take a second' +
-                 'to <a href="https://www.google.com/intl/en/chrome/browser/">upgrade to a more modern browser</a>.', true)
-  }
+    var img = new Image()
+    img.onload = function () {
+      $compileBtn.prop('disabled', false)
+    }
+    img.onerror = function () {
+      $('.bs-docs-section, .bs-docs-sidebar').css('display', 'none')
+      showCallout('Looks like your current browser doesn\'t support the Bootstrap Customizer. Please take a second ' +
+                   'to <a href="https://www.google.com/intl/en/chrome/browser/">upgrade to a more modern browser</a>.', true)
+    }
+
+    var url = window.webkitURL || window.URL // Safari 6 uses "webkitURL".
+    img.src = url.createObjectURL(svg)
+  }()
 
   parseUrl()
 }

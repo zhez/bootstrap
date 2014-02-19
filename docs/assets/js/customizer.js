@@ -327,34 +327,32 @@ window.onload = function () { // wait for load in a dumb way because B-0
       saveAs(blob, 'bootstrap.zip')
       createGist(configJson)
     })
-  })
+  });
 
   // browser support alert
-  +function () {
+  (function () {
     /**
      * Based on:
      *   Blob Feature Check v1.0.0
      *   https://github.com/ssorallen/blob-feature-check/
      *   License: Public domain (http://unlicense.org)
      */
+    var url = window.webkitURL || window.URL // Safari 6 uses "webkitURL".
     var svg = new Blob(
       ['<svg xmlns=\'http://www.w3.org/2000/svg\'></svg>'],
       {type: 'image/svg+xml;charset=utf-8'}
     )
-
-    var img = new Image()
-    img.onload = function () {
-      $compileBtn.prop('disabled', false)
-    }
-    img.onerror = function () {
-      $('.bs-docs-section, .bs-docs-sidebar').css('display', 'none')
-      showCallout('Looks like your current browser doesn\'t support the Bootstrap Customizer. Please take a second ' +
-                   'to <a href="https://www.google.com/intl/en/chrome/browser/">upgrade to a more modern browser</a>.', true)
-    }
-
-    var url = window.webkitURL || window.URL // Safari 6 uses "webkitURL".
-    img.src = url.createObjectURL(svg)
-  }()
+    $('<img>')
+      .on('load', function () {
+        $compileBtn.prop('disabled', false)
+      })
+      .on('error', function () {
+        $('.bs-docs-section, .bs-docs-sidebar').css('display', 'none')
+        showCallout('Looks like your current browser doesn\'t support the Bootstrap Customizer. Please take a second ' +
+                     'to <a href="https://www.google.com/intl/en/chrome/browser/">upgrade to a more modern browser</a>.', true)
+      })
+      .attr('src', url.createObjectURL(svg))
+  })();
 
   parseUrl()
 }

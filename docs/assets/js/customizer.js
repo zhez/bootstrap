@@ -349,7 +349,7 @@ window.onload = function () { // wait for load in a dumb way because B-0
       .on('error', function () {
         $('.bs-docs-section, .bs-docs-sidebar').css('display', 'none')
         showCallout('Looks like your current browser doesn\'t support the Bootstrap Customizer. Please take a second ' +
-                     'to <a href="https://www.google.com/intl/en/chrome/browser/">upgrade to a more modern browser</a>.', true)
+                     'to <a href="http://browsehappy.com/">upgrade to a more modern browser</a> (other than Safari).', true)
       })
       .attr('src', url.createObjectURL(svg))
   })();

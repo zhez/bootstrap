@@ -1,4 +1,6 @@
 # Enforce Unix newlines for all the files in the repository
 * text  eol=lf
+
+# Explictly set images as binary types
 *.png   binary
 *.jpg   binary
